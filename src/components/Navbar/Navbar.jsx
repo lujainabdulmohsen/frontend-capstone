@@ -6,9 +6,9 @@ export default function Navbar({ user, setUser }) {
 
   function handleLogout(e) {
     e.preventDefault();
-    /*usersAPI.logout();
+    localStorage.removeItem("token");
     setUser(null);
-    navigate("/");*/
+    navigate("/");
   }
 
   if (user) {
