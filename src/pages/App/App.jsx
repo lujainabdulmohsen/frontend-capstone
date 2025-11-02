@@ -9,6 +9,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import SignupPage from "../SignupPage/SignupPage";
 import * as userService from "../../utilities/users-service";
 import "../../global.css";
+import LoginPage from "../LoginPage/LoginPage";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -61,6 +62,8 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/assistant" element={<ChatBotPage />} />
               <Route path="/signup" element={<SignupPage user={user} setUser={setUser} />} />
+            <Route path="/login" element={<LoginPage setUser={setUser} />} />
+
               <Route path="/*" element={<Navigate to="/" />} />
             </>
           )}

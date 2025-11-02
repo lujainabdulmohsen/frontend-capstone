@@ -134,7 +134,6 @@ button,
   background-color: #c0392b; /* أحمر واضح */
 }
 
-/* ✅ التأثيرات */
 button:hover,
 .edit-btn:hover,
 .detail-btn:hover,
@@ -144,13 +143,11 @@ button:hover,
   filter: brightness(1.08);
 }
 
-/* ✅ تأكيد ظهور الأزرار دائمًا */
 button, .edit-btn, .detail-btn, .delete-btn {
   opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* ✅ ترتيب الأزرار */
 .request-actions {
   display: flex;
   justify-content: center;
@@ -160,7 +157,6 @@ button, .edit-btn, .detail-btn, .delete-btn {
   flex-wrap: wrap;
 }
 
-/* ✅ الحقول والنماذج */
 input, select, textarea {
   width: 100%;
   max-width: 350px;
@@ -180,7 +176,6 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(56, 105, 134, 0.25);
 }
 
-/* ✅ تنسيق الصفحة بالكامل */
 .page-container > section,
 .page-container > div {
   width: 100%;
@@ -188,7 +183,6 @@ input:focus, select:focus, textarea:focus {
   margin: auto;
 }
 
-/* ✅ الفوتر */
 footer {
   text-align: center;
   padding: 1rem;
@@ -197,7 +191,6 @@ footer {
   font-size: 0.9rem;
   letter-spacing: 0.5px;
 }
-/* Signup Page Styling */
 .page-header {
   text-align: center;
   margin-bottom: 2rem;
