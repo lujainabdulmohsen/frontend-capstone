@@ -59,3 +59,10 @@ export async function deleteRequest(id) {
   if (!res.ok && res.status !== 204) throw new Error("Failed to delete request");
   return true;
 }
+export async function show(id) {
+  const res = await fetch(`${BASE_URL}/service-requests/${id}/`, {
+    headers: getAuthHeaders(),
+  });
+  if (!res.ok) throw new Error("Failed to fetch request details");
+  return res.json();
+}

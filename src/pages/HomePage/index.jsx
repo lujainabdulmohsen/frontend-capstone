@@ -16,8 +16,7 @@ export default function HomePage({ user, setUser }) {
     try {
       evt.preventDefault();
       const loggedInUser = await usersAPI.login(formData);
-      // ✅ نحفظ التوكن حتى يبقى المستخدم مسجل
-      //localStorage.setItem("token", loggedInUser.access);
+     
       setUser(loggedInUser);
       navigate("/assistant");
     } catch (err) {

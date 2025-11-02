@@ -23,9 +23,11 @@ export default function Navbar({ user, setUser }) {
         <li>
           <Link to="/requests">My Requests</Link>
         </li>
-        <form id="logout-form" onSubmit={handleLogout}>
-          <button type="submit">Log out</button>
-        </form>
+        <li>
+          <button onClick={handleLogout} className="nav-btn logout-btn">
+            Log out
+          </button>
+        </li>
       </>
     );
   }

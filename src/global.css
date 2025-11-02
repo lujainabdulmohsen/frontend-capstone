@@ -264,3 +264,16 @@ footer {
   transform: scale(1.03);
   background: linear-gradient(135deg, #0061b2, #00d1b2);
 }
+.nav-btn {
+  background-color: #003a63; 
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: #004e92; 
+}
