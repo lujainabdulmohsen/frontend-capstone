@@ -1,0 +1,32 @@
+.about-container {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #002E47, #2A4628);
+  padding: 2rem;
+}
+
+.about-content {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 3rem 4rem;
+  border-radius: 16px;
+  max-width: 750px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.about-content h1 {
+  color: #002E47;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.about-content p {
+  color: #2A4628;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+}

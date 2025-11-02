@@ -1,0 +1,52 @@
+/* 🌿 الصفحة الرئيسية */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  background: linear-gradient(135deg, #002E47, #2A4628);
+  color: #F9FAFB;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
+}
+
+/* العنوان */
+.home-page h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #F9FAFB;
+  margin-bottom: 1.5rem;
+}
+
+/* الفقرة */
+.home-page p {
+  max-width: 600px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #E0E0E0;
+  margin-bottom: 2rem;
+}
+
+/* زر البداية */
+.home-page .action-btn {
+  background-color: #779663;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.home-page .action-btn:hover {
+  background-color: #386986;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}

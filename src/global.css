@@ -1,0 +1,266 @@
+/* 🌐 الأساس */
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f7f9fa;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #002E47;
+}
+
+/* ✅ الحاوية العامة */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #002E47, #2A4628);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* ✅ الهيدر */
+.main-header {
+  width: 100%;
+  background-color: #002E47;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.main-header nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 1rem;
+}
+
+.main-header nav a {
+  color: #F9FAFB;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.main-header nav a:hover {
+  color: #779663;
+}
+
+/* ✅ العناوين */
+h1, h2, h3 {
+  text-align: center;
+  color: #F9FAFB;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+/* ✅ البطاقات */
+.card, .request-card, .agency-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 46, 71, 0.1);
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  width: 90%;
+  max-width: 750px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover, .request-card:hover, .agency-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 46, 71, 0.15);
+}
+
+/* ✅ النص داخل البطاقة */
+.request-card p {
+  color: #002E47;
+  font-size: 0.95rem;
+  margin: 0.3rem 0;
+}
+
+.request-card strong {
+  color: #002E47;
+}
+
+/* ✅ الأزرار الموحدة */
+button,
+.edit-btn,
+.detail-btn,
+.delete-btn {
+  min-width: 120px;
+  height: 42px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 46, 71, 0.12);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ✅ الألوان الأساسية */
+.edit-btn {
+  background-color: #779663; /* أخضر ملكي */
+}
+
+.detail-btn {
+  background-color: #386986; /* أزرق ملكي */
+}
+
+.delete-btn {
+  background-color: #c0392b; /* أحمر واضح */
+}
+
+/* ✅ التأثيرات */
+button:hover,
+.edit-btn:hover,
+.detail-btn:hover,
+.delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 46, 71, 0.25);
+  filter: brightness(1.08);
+}
+
+/* ✅ تأكيد ظهور الأزرار دائمًا */
+button, .edit-btn, .detail-btn, .delete-btn {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* ✅ ترتيب الأزرار */
+.request-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+
+/* ✅ الحقول والنماذج */
+input, select, textarea {
+  width: 100%;
+  max-width: 350px;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(0, 46, 71, 0.25);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #002E47;
+  margin-top: 0.4rem;
+  background-color: #fff;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #386986;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(56, 105, 134, 0.25);
+}
+
+/* ✅ تنسيق الصفحة بالكامل */
+.page-container > section,
+.page-container > div {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* ✅ الفوتر */
+footer {
+  text-align: center;
+  padding: 1rem;
+  color: #F9FAFB;
+  background-color: #002E47;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+/* Signup Page Styling */
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-container.signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-container.signup table {
+  width: 100%;
+}
+
+.form-container.signup label {
+  color: #fff;
+  font-weight: 600;
+}
+
+.form-container.signup input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 0.4rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-container.signup input:focus {
+  border: 2px solid #00bcd4;
+  background: #f8faff;
+}
+
+.form-container.signup p {
+  color: #ff9f9f;
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+.btn.submit {
+  margin-top: 1.5rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #004e92, #00bfa5);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn.submit:hover {
+  transform: scale(1.03);
+  background: linear-gradient(135deg, #0061b2, #00d1b2);
+}
