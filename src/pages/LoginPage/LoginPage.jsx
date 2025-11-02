@@ -1,22 +1,32 @@
 import "./styles.css";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import * as userService from "../../utilities/users-service";
+import * as usersAPI from "../../utilities/users-api";
 
 export default function LoginPage({ setUser }) {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
+  const initialState = { username: "", password: "" };
+  const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState("");
 
-  function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  function handleChange(evt) {
+    setFormData({ ...formData, [evt.target.name]: evt.target.value });
     setError("");
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleLogin(evt) {
+    evt.preventDefault();
     try {
-      const user = await userService.login(formData);
-      setUser(user);
-    } catch {
+      const loggedInUser = await usersAPI.login(formData);
+      if (loggedInUser) {
+        setUser(loggedInUser);
+        navigate("/assistant"); // ✅ نفس السلوك بالهوم بيج
+      } else {
+        setError("Login failed. Please check your credentials.");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setUser(null);
       setError("Login failed. Please check your credentials.");
     }
   }
@@ -26,7 +36,8 @@ export default function LoginPage({ setUser }) {
       <div className="login-container">
         <h1>Welcome Back</h1>
         <p>Please sign in to continue</p>
-        <form onSubmit={handleSubmit}>
+
+        <form onSubmit={handleLogin}>
           <label htmlFor="username">Username</label>
           <input
             id="username"
@@ -46,9 +57,12 @@ export default function LoginPage({ setUser }) {
             required
           />
 
-          <button type="submit" className="login-btn">Login</button>
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+
+          {error && <p className="error">{error}</p>}
         </form>
-        {error && <p className="error">{error}</p>}
       </div>
     </div>
   );

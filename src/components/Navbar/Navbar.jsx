@@ -18,6 +18,9 @@ export default function Navbar({ user, setUser }) {
           <Link to="/about">About</Link>
         </li>
         <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
           <Link to="/assistant">Yusr Assistant</Link>
         </li>
         <li>
@@ -45,9 +48,8 @@ export default function Navbar({ user, setUser }) {
           <Link to="/signup">Sign Up</Link>
         </li>
         <li>
-  <Link to="/login">Login</Link>
-</li>
-
+          <Link to="/login">Login</Link>
+        </li>
       </>
     );
 }
