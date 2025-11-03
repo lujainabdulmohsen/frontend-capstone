@@ -98,14 +98,14 @@ export default function ChatBotPage() {
       return "Your medical report has been submitted and will be sent to your email.";
     if (service.name.includes("License"))
       return "Driving License renewal for 10 years. Fee: 150 SAR.";
+    if (service.name.includes("Vehicle"))
+      return "New Vehicle registration Fee: 150 SAR.";
     if (
       service.name.includes("Violation") ||
       service.name.includes("Fine") ||
       service.name.includes("Traffic")
     )
       return "Traffic fine payment processed successfully. Fee: 150 SAR.";
-    if (service.name.includes("Vehicle"))
-      return "Vehicle registration completed successfully.";
     return `${service.name} has been processed successfully.`;
   }
 
@@ -149,10 +149,11 @@ export default function ChatBotPage() {
       try {
         const request = await serviceRequestAPI.create(pendingService.id, {});
         await serviceRequestAPI.payServiceRequest(request.id);
-        setMessages((prev) => [
-          ...prev,
-          { sender: "bot", text: `✅ ${pendingService.name} succeeded!` },
-        ]);
+        const successText =
+          pendingService.name.includes("Vehicle")
+            ? "✅ New Vehicle registration succeeded!"
+            : `✅ ${pendingService.name} succeeded!`;
+        setMessages((prev) => [...prev, { sender: "bot", text: successText }]);
       } catch {
         setMessages((prev) => [
           ...prev,
@@ -163,7 +164,10 @@ export default function ChatBotPage() {
       setMessages((prev) => [
         ...prev,
         { sender: "user", text: "Cancel Payment" },
-        { sender: "bot", text: "❌ Payment cancelled. Your request was not submitted." },
+        {
+          sender: "bot",
+          text: "❌ Payment cancelled. Your request was not submitted.",
+        },
       ]);
     }
     setPendingService(null);
