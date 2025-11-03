@@ -2,12 +2,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* بدلنا center إلى flex-start علشان يطلع المحتوى فوق */
   align-items: center;
   text-align: center;
   background: linear-gradient(135deg, #002E47 0%, #2A4628 100%);
   color: #f1f6f4;
-  padding: 2rem;
+  padding: 6rem 2rem 2rem; /* زدنا المسافة العلوية شوي */
 }
 
 .home-page h1 {
