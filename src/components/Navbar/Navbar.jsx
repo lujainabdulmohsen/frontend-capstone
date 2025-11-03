@@ -27,6 +27,9 @@ export default function Navbar({ user, setUser }) {
           <Link to="/requests">My Requests</Link>
         </li>
         <li>
+          <Link to="/my-account">My Account</Link>
+        </li>
+        <li>
           <button onClick={handleLogout} className="nav-btn logout-btn">
             Log out
           </button>

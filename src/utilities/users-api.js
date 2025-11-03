@@ -23,18 +23,24 @@ export async function login(formData) {
   }
 }
 
-
 export async function getUser() {
   const token = localStorage.getItem("token");
   if (!token) return null;
 
   try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    const user = payload.user || { username: payload.username };
-    return user;
+    const response = await sendRequest("http://127.0.0.1:8000/users/token/refresh/", "GET");
+    return response.user;
   } catch (err) {
-    console.error("Invalid token:", err);
+    console.error("Error verifying user:", err);
     localStorage.removeItem("token");
     return null;
   }
+}
+
+export async function changePassword(old_password, new_password) {
+  const response = await sendRequest(`${BASE_URL}/change-password/`, "POST", { old_password, new_password });
+  if (response && response.access) {
+    localStorage.setItem("token", response.access);
+  }
+  return true;
 }
