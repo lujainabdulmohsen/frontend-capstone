@@ -6,12 +6,14 @@ export default function MyAccountPage() {
   const [user, setUser] = useState(null);
   const [bank, setBank] = useState(null);
   const [displayName, setDisplayName] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [showBank, setShowBank] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const u = await getUser();
       setUser(u);
       try {
@@ -19,19 +21,28 @@ export default function MyAccountPage() {
         setBank(b);
         setDisplayName(b.display_name || "");
       } catch {}
+      setLoading(false);
     })();
   }, []);
 
   async function handleUpdateBank(e) {
     e.preventDefault();
+    setLoading(true);
     const updated = await updateMyBankAccount({ display_name: displayName });
     setBank(updated);
     setIsEditing(false);
+    setMsg("Saved");
+    setTimeout(()=>setMsg(""),1500);
+    setLoading(false);
   }
 
   async function handleDeleteBank() {
+    setLoading(true);
     await deleteMyBankAccount();
     setBank(null);
+    setMsg("Deleted");
+    setTimeout(()=>setMsg(""),1500);
+    setLoading(false);
   }
 
   const styles = {
@@ -50,8 +61,8 @@ export default function MyAccountPage() {
       padding: "1.5rem 2rem",
       marginBottom: "1.5rem",
       width: "100%",
-      maxWidth: "600px",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+      maxWidth: "700px",
+      boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
     },
     title: {
       fontSize: "2rem",
@@ -63,13 +74,13 @@ export default function MyAccountPage() {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      padding: "0.5rem 0",
-      borderBottom: "1px solid rgba(255,255,255,0.2)",
+      padding: "0.6rem 0",
+      borderBottom: "1px solid rgba(255,255,255,0.12)",
     },
     label: { fontWeight: "600" },
     input: {
       width: "100%",
-      padding: "0.5rem",
+      padding: "0.6rem",
       borderRadius: "8px",
       border: "none",
       marginTop: "0.5rem",
@@ -83,24 +94,38 @@ export default function MyAccountPage() {
     },
     btn: {
       flex: 1,
-      padding: "0.6rem 1rem",
+      padding: "0.7rem 1rem",
       border: "none",
       borderRadius: "8px",
       cursor: "pointer",
       fontWeight: "600",
-      transition: "0.3s",
+      transition: "0.25s",
     },
     view: { background: "#f1f7f9", color: "#003a63" },
     edit: { background: "#004e92", color: "#fff" },
     delete: { background: "#b33a3a", color: "#fff" },
+    smallInfo: {
+      background: "rgba(255,255,255,0.08)",
+      padding: "1rem",
+      borderRadius: "10px",
+      marginTop: "1rem",
+    }
   };
+
+  if (loading) {
+    return (
+      <div style={{...styles.page, justifyContent:"center"}}>
+        <div style={{color:"#fff", fontSize:18}}>Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>My Account</h1>
 
       <div style={styles.card}>
-        <h2>User Info</h2>
+        <h2 style={{textAlign:"center", marginBottom:10}}>User Info</h2>
         <div style={styles.field}>
           <span style={styles.label}>Username:</span>
           <span>{user?.username || ""}</span>
@@ -109,30 +134,12 @@ export default function MyAccountPage() {
           <span style={styles.label}>Email:</span>
           <span>{user?.email || ""}</span>
         </div>
-        <div style={styles.field}>
-          <span style={styles.label}>Password:</span>
-          <span style={{ filter: showPassword ? "none" : "blur(5px)" }}>
-            ********
-          </span>
-          <button
-            onClick={() => setShowPassword(!showPassword)}
-            style={{
-              ...styles.btn,
-              flex: "unset",
-              background: "rgba(255,255,255,0.2)",
-              color: "#fff",
-              marginLeft: "1rem",
-            }}
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </div>
       </div>
 
       <div style={styles.card}>
-        <h2>My Bank Account</h2>
+        <h2 style={{textAlign:"center", marginBottom:10}}>My Bank Account</h2>
         {!bank ? (
-          <p style={{ opacity: 0.8 }}>No bank account found</p>
+          <p style={{ opacity: 0.9 }}>No bank account found</p>
         ) : (
           <>
             <div style={styles.buttonRow}>
@@ -157,24 +164,9 @@ export default function MyAccountPage() {
             </div>
 
             {showBank && (
-              <div
-                style={{
-                  background: "rgba(255,255,255,0.15)",
-                  padding: "1rem",
-                  borderRadius: "12px",
-                  marginTop: "1rem",
-                }}
-              >
-                <p>
-                  <strong>Display Name:</strong> {bank.display_name}
-                </p>
-                <p>
-                  <strong>IBAN:</strong> {bank.iban}
-                </p>
-                <p>
-                  <strong>Password:</strong>{" "}
-                  <span style={{ filter: "blur(5px)" }}>********</span>
-                </p>
+              <div style={styles.smallInfo}>
+                <p><strong>Display Name:</strong> {bank.display_name}</p>
+                <p style={{wordBreak:"break-all"}}><strong>IBAN:</strong> {bank.iban}</p>
               </div>
             )}
 
@@ -194,7 +186,7 @@ export default function MyAccountPage() {
                   style={{
                     ...styles.btn,
                     ...styles.edit,
-                    marginTop: "0.5rem",
+                    marginTop: "0.6rem",
                     width: "100%",
                   }}
                 >
@@ -205,6 +197,8 @@ export default function MyAccountPage() {
           </>
         )}
       </div>
+
+      {msg && <div style={{marginTop:10, color:"#fff"}}>{msg}</div>}
     </div>
   );
 }

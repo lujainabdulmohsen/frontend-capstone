@@ -10,6 +10,7 @@ export default function ChatBotPage() {
   const [selectedService, setSelectedService] = useState(null);
   const [step, setStep] = useState("welcome");
   const [appointment, setAppointment] = useState({ date: "", time: "" });
+  const [pendingService, setPendingService] = useState(null);
   const chatBoxRef = useRef(null);
 
   useEffect(() => {
@@ -71,7 +72,20 @@ export default function ChatBotPage() {
       ]);
     } else {
       const reply = getServiceReply(service);
-      await finalizeRequest(service, reply);
+      if (reply.includes("Fee:")) {
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: reply },
+          {
+            sender: "bot",
+            text: "Would you like to pay this fee from your Yusr bank account?",
+          },
+        ]);
+        setPendingService(service);
+        setStep("payment");
+      } else {
+        await finalizeRequest(service, reply);
+      }
     }
   }
 
@@ -122,6 +136,37 @@ export default function ChatBotPage() {
     if (!appointment.date || !appointment.time) return;
     const reply = `Appointment booked on ${appointment.date} at ${appointment.time}. Location: nearest center.`;
     await finalizeRequest(selectedService, reply, appointment);
+    setStep("services");
+  }
+
+  async function handlePayment(confirm) {
+    if (confirm) {
+      setMessages((prev) => [
+        ...prev,
+        { sender: "user", text: "Confirm Payment" },
+        { sender: "bot", text: "💳 Processing payment from your Yusr account..." },
+      ]);
+      try {
+        const request = await serviceRequestAPI.create(pendingService.id, {});
+        await serviceRequestAPI.payServiceRequest(request.id);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: `✅ ${pendingService.name} succeeded!` },
+        ]);
+      } catch {
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "❌ Payment failed. Please try again." },
+        ]);
+      }
+    } else {
+      setMessages((prev) => [
+        ...prev,
+        { sender: "user", text: "Cancel Payment" },
+        { sender: "bot", text: "❌ Payment cancelled. Your request was not submitted." },
+      ]);
+    }
+    setPendingService(null);
     setStep("services");
   }
 
@@ -226,6 +271,13 @@ export default function ChatBotPage() {
               </button>
             </div>
           </form>
+        )}
+
+        {step === "payment" && (
+          <div className="option-row">
+            <button onClick={() => handlePayment(true)}>✅ Confirm Payment</button>
+            <button onClick={() => handlePayment(false)}>❌ Cancel</button>
+          </div>
         )}
       </div>
     </section>
