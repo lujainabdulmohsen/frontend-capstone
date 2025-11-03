@@ -191,72 +191,71 @@ footer {
   font-size: 0.9rem;
   letter-spacing: 0.5px;
 }
+
 .page-header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
+/* ✅ صفحة التسجيل (Sign Up) بنفس تصميم اللوق إن */
 .form-container.signup {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 46, 71, 0.85);
   border-radius: 20px;
-  padding: 2rem;
+  padding: 2rem 3rem;
   width: 90%;
-  max-width: 500px;
-  margin: 0 auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.form-container.signup table {
-  width: 100%;
+  max-width: 420px;
+  margin: 3rem auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  text-align: left;
+  color: #fff;
 }
 
 .form-container.signup label {
-  color: #fff;
-  font-weight: 600;
+  color: #e0e0e0;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
 }
 
 .form-container.signup input {
   width: 100%;
-  padding: 10px 12px;
-  margin-top: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
   border-radius: 8px;
   border: none;
   outline: none;
-  font-size: 14px;
+  background: #f9fafb;
+  color: #002E47;
+  font-size: 0.95rem;
 }
 
 .form-container.signup input:focus {
-  border: 2px solid #00bcd4;
-  background: #f8faff;
-}
-
-.form-container.signup p {
-  color: #ff9f9f;
-  font-size: 13px;
-  margin: 4px 0 0;
+  border: 1px solid #779663;
+  box-shadow: 0 0 0 3px rgba(119, 150, 99, 0.3);
 }
 
 .btn.submit {
-  margin-top: 1.5rem;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(135deg, #004e92, #00bfa5);
+  width: 100%;
+  background: linear-gradient(135deg, #386986, #779663);
   color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.3s ease;
+  transition: 0.3s;
 }
 
 .btn.submit:hover {
-  transform: scale(1.03);
-  background: linear-gradient(135deg, #0061b2, #00d1b2);
+  background: linear-gradient(135deg, #2A4628, #386986);
+  transform: translateY(-1px);
 }
+
+/* ✅ أزرار الناف بار */
 .nav-btn {
   background-color: #003a63; 
   color: #fff;
@@ -269,4 +268,50 @@ footer {
 
 .nav-btn:hover {
   background-color: #004e92; 
+}
+
+/* 🎨 صفحة Sign Up بنفس خلفية Login */
+.signup-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #002E47, #2A4628);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* ✨ الوهج الأزرق المطابق لصفحة Login */
+.signup-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 35%,          
+    rgba(56, 105, 134, 0.45) 0%,  
+    rgba(0, 46, 71, 0.25) 50%,   
+    rgba(0, 46, 71, 0) 100%      
+  );
+  filter: blur(80px);
+  opacity: 1;
+  z-index: 0;
+}
+
+.signup-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.signup-page .page-header {
+  margin-bottom: 1.5rem;
+}
+
+.signup-page .page-header h1 {
+  color: #fff;
+  text-align: center;
+  margin: 0 0 1rem 0;
 }

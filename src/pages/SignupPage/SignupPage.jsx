@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as usersAPI from "../../utilities/users-api.js"
-import "./styles.css";
 
 export default function SignupPage({ setUser }) {
     const navigate = useNavigate();
@@ -48,7 +47,7 @@ export default function SignupPage({ setUser }) {
     }
 
     return (
-        <>
+        <section className="signup-page">
             <div className="page-header">
                 <h1>Sign Up</h1>
             </div>
@@ -91,6 +90,6 @@ export default function SignupPage({ setUser }) {
                 </table>
                 <button type="submit" disabled={disabledSubmitBtn} className="btn submit">Submit!</button>
             </form>
-        </>
+        </section>
     )
 }

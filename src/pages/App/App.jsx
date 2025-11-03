@@ -8,8 +8,8 @@ import ServiceRequestDetailPage from "../ServiceRequestDetailPage";
 import Navbar from "../../components/Navbar/Navbar";
 import SignupPage from "../SignupPage/SignupPage";
 import * as userService from "../../utilities/users-service";
-import "../../global.css";
 import LoginPage from "../LoginPage/LoginPage";
+import "../../utilities/globa.css";
 
 export default function App() {
   const [user, setUser] = useState(null);
