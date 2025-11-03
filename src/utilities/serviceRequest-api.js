@@ -4,7 +4,7 @@ const BASE_URL = "http://127.0.0.1:8000";
 
 function getAuthHeaders() {
   const token = getToken();
-  console.log(token, 'this should be the token');
+  console.log(token, "this should be the token");
   return token
     ? { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
     : { "Content-Type": "application/json" };
@@ -59,10 +59,24 @@ export async function deleteRequest(id) {
   if (!res.ok && res.status !== 204) throw new Error("Failed to delete request");
   return true;
 }
+
 export async function show(id) {
   const res = await fetch(`${BASE_URL}/service-requests/${id}/`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch request details");
+  return res.json();
+}
+
+export async function payServiceRequest(id) {
+  const res = await fetch(`${BASE_URL}/service-requests/${id}/pay/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+  });
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("❌ Payment failed:", errorText);
+    throw new Error("Failed to process payment");
+  }
   return res.json();
 }
