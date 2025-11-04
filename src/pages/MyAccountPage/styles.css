@@ -1,0 +1,150 @@
+.account-page {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #002E47 0%, #2A4628 100%);
+}
+
+.account-page h1 {
+  color: #f1f6f4;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.account-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 46, 71, 0.1);
+  width: 90%;
+  max-width: 750px;
+  margin: 1rem auto;
+  padding: 1.5rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.account-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 46, 71, 0.15);
+}
+
+.account-card h2 {
+  color: #002E47;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ✅ العنوان يسار والقيمة بالنص الفعلي */
+.account-field {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(0, 46, 71, 0.15);
+  padding: 0.8rem 0;
+}
+
+.account-field .label {
+  color: #002E47;
+  font-weight: 600;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 0.3rem;
+}
+
+.account-field .value {
+  text-align: center; /* وسط فعلي */
+  color: #002E47;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* باقي التنسيقات كما هي */
+.no-bank {
+  color: #002E47;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+
+button,
+.view-btn,
+.edit-btn,
+.delete-btn {
+  min-width: 120px;
+  height: 42px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 46, 71, 0.12);
+}
+
+.view-btn {
+  background-color: #386986;
+}
+
+.edit-btn {
+  background-color: #779663;
+}
+
+.delete-btn {
+  background-color: #c0392b;
+}
+
+button:hover,
+.view-btn:hover,
+.edit-btn:hover,
+.delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 46, 71, 0.25);
+  filter: brightness(1.08);
+}
+
+.bank-info {
+  background: #f7fafa;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #002E47;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.bank-info p {
+  margin: 0.4rem 0;
+}
+
+.edit-form {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.edit-form input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 46, 71, 0.25);
+  font-size: 0.95rem;
+  margin-top: 0.4rem;
+}
+
+.status-msg {
+  color: #f1f6f4;
+  margin-top: 1rem;
+  font-weight: 500;
+  text-align: center;
+}

@@ -60,7 +60,6 @@ export default function ChatBotPage() {
     setSelectedService(service);
     setMessages((prev) => [...prev, { sender: "user", text: service.name }]);
 
-    // فقط رقم تسلسلي للمركبة قبل الدفع
     if (service.name.match(/Vehicle/i)) {
       setStep("serial");
       setMessages((prev) => [
@@ -145,14 +144,12 @@ export default function ChatBotPage() {
     return `${service.name} has been processed successfully.`;
   }
 
-  // ✅ فقط هذا الجزء فيه التعديل المطلوب
   async function finalizeRequest(service, reply, appointmentInfo = {}, extraData = {}) {
     try {
       const payload = Object.keys(appointmentInfo).length
         ? { ...appointmentInfo, ...extraData }
         : { ...extraData };
 
-      // تعديل الحالة فقط بدون المساس بالمنطق
       if (service.name.match(/Vehicle|Medical Report/i)) {
         payload.status = "Approved";
       }
@@ -191,7 +188,7 @@ export default function ChatBotPage() {
         { sender: "user", text: "Confirm Payment" },
         {
           sender: "bot",
-          text: "💳 Processing payment from your Yusr account...",
+          text: "Processing payment from your Yusr account...",
         },
       ]);
       try {
@@ -199,12 +196,12 @@ export default function ChatBotPage() {
           status: "Approved",
         });
         await serviceRequestAPI.payServiceRequest(request.id);
-        const successText = `✅ ${pendingService.name} succeeded!`;
+        const successText = `${pendingService.name} succeeded!`;
         setMessages((prev) => [...prev, { sender: "bot", text: successText }]);
       } catch {
         setMessages((prev) => [
           ...prev,
-          { sender: "bot", text: "❌ Payment failed. Please try again." },
+          { sender: "bot", text: "Payment failed. Please try again." },
         ]);
       }
     } else {
@@ -213,7 +210,7 @@ export default function ChatBotPage() {
         { sender: "user", text: "Cancel Payment" },
         {
           sender: "bot",
-          text: "❌ Payment cancelled. Your request was not submitted.",
+          text: "Payment cancelled. Your request was not submitted.",
         },
       ]);
     }
@@ -300,7 +297,6 @@ export default function ChatBotPage() {
           gap: "1rem",
         }}
       >
-        {/* الأزرار كلها محفوظة بالضبط */}
         {step === "welcome" && (
           <div style={row}>
             {agencies.map((a) => (

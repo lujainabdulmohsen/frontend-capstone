@@ -123,15 +123,15 @@ button,
 
 /* ✅ الألوان الأساسية */
 .edit-btn {
-  background-color: #779663; /* أخضر ملكي */
+  background-color: #779663;
 }
 
 .detail-btn {
-  background-color: #386986; /* أزرق ملكي */
+  background-color: #386986;
 }
 
 .delete-btn {
-  background-color: #c0392b; /* أحمر واضح */
+  background-color: #c0392b;
 }
 
 button:hover,
@@ -197,27 +197,68 @@ footer {
   margin-bottom: 2rem;
 }
 
-/* ✅ صفحة التسجيل (Sign Up) بنفس تصميم اللوق إن */
-.form-container.signup {
+/* 🎯 صفحة Sign Up مطابقة تمامًا لـ Login */
+.signup-page {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #002E47, #386986, #2A4628);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* ✨ وهج مطابق */
+.signup-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(56, 105, 134, 0.45) 0%,
+    rgba(0, 46, 71, 0.25) 50%,
+    rgba(0, 46, 71, 0) 100%
+  );
+  filter: blur(80px);
+  opacity: 1;
+  z-index: 0;
+}
+
+.signup-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 🪩 البطاقة الزجاجية */
+.form-container.signup {
   background: rgba(0, 46, 71, 0.85);
-  border-radius: 20px;
   padding: 2rem 3rem;
-  width: 90%;
-  max-width: 420px;
-  margin: 3rem auto;
+  border-radius: 20px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 420px;
   text-align: left;
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+.form-container.signup h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
   color: #fff;
 }
 
 .form-container.signup label {
-  color: #e0e0e0;
+  display: block;
   font-weight: 500;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
+  color: #e0e0e0;
+  font-size: 0.9rem;
 }
 
 .form-container.signup input {
@@ -230,6 +271,7 @@ footer {
   background: #f9fafb;
   color: #002E47;
   font-size: 0.95rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .form-container.signup input:focus {
@@ -237,6 +279,7 @@ footer {
   box-shadow: 0 0 0 3px rgba(119, 150, 99, 0.3);
 }
 
+/* الزر */
 .btn.submit {
   width: 100%;
   background: linear-gradient(135deg, #386986, #779663);
@@ -255,63 +298,123 @@ footer {
   transform: translateY(-1px);
 }
 
-/* ✅ أزرار الناف بار */
-.nav-btn {
-  background-color: #003a63; 
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: 0.3s ease;
+/* النصوص والأخطاء */
+.signup-page p {
+  color: #ffcdd2;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0.5rem 0;
 }
 
-.nav-btn:hover {
-  background-color: #004e92; 
-}
-
-/* 🎨 صفحة Sign Up بنفس خلفية Login */
-.signup-page {
+/* 🌟 عنوان Sign Up فوق المربع ومتوسط */
+.signup-page .page-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1.5rem;
   position: relative;
+  z-index: 2;
+}
+
+.signup-page .page-header h1 {
+  font-size: 2.2rem;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  margin: 0 auto 1.5rem auto;
+}
+/* 🌟 توسيط زر Submit في صفحة Sign Up */
+.form-container.signup {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.form-container.signup .btn.submit {
+  display: block;
+  margin: 1rem auto 0 auto;
+  text-align: center;
+}
+/* 🎨 توحيد خلفية Sign Up مع Login */
+.signup-page {
+  background: linear-gradient(135deg, #002E47 0%, #386986 50%, #2A4628 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+/* 👑 مطابقة خلفية Sign Up مع Login تمامًا */
+.signup-page {
+  position: relative;
+  display: flex;
+  align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #002E47, #2A4628);
+  background: linear-gradient(135deg, #002E47 0%, #386986 50%, #2A4628 100%);
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
   overflow: hidden;
 }
 
-/* ✨ الوهج الأزرق المطابق لصفحة Login */
+/* 💎 تصحيح اللمعة الزجاجية لخلفية Sign Up لتطابق Login تمامًا */
+.signup-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #002E47 0%, #386986 50%, #2A4628 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.signup-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #001E32 0%, #386986 50%, #1E3520 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
 .signup-page::before {
   content: "";
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    circle at 50% 35%,          
-    rgba(56, 105, 134, 0.45) 0%,  
-    rgba(0, 46, 71, 0.25) 50%,   
-    rgba(0, 46, 71, 0) 100%      
+    circle at 50% 40%,
+    rgba(255, 255, 255, 0.08) 0%,    
+    rgba(56, 105, 134, 0.28) 25%,    
+    rgba(0, 46, 71, 0.35) 55%,       
+    rgba(0, 46, 71, 0.08) 100%       
   );
-  filter: blur(80px);
+  filter: blur(110px) saturate(160%) brightness(1);
   opacity: 1;
   z-index: 0;
+  transition: all 0.3s ease-in-out;
+}
+.logout-btn {
+  background-color: #386986 !important; 
+  color: #fff !important;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 46, 71, 0.12);
 }
 
-.signup-page > * {
-  position: relative;
-  z-index: 1;
-}
-
-.signup-page .page-header {
-  margin-bottom: 1.5rem;
-}
-
-.signup-page .page-header h1 {
-  color: #fff;
-  text-align: center;
-  margin: 0 0 1rem 0;
+.logout-btn:hover {
+  background-color: #2A4628 !important; 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 46, 71, 0.25);
 }

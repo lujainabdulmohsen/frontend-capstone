@@ -1,4 +1,3 @@
-/* ====== GLOBAL THEME ====== */
 :root {
   --green-dark: #2A4628;
   --green-mid: #779663;
@@ -15,7 +14,6 @@ body {
   min-height: 100vh;
 }
 
-/* ====== NAVBAR ====== */
 header {
   background-color: var(--blue-dark);
   padding: 0.8rem 2rem;
