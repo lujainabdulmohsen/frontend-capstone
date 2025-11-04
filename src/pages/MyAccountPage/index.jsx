@@ -42,15 +42,71 @@ export default function MyAccountPage() {
   }
 
   async function handleDeleteBank() {
+    if (!bank) return;
     setLoading(true);
-    await deleteMyBankAccount();
-    setBank(null);
-    setMsg("Deleted");
-    setTimeout(() => setMsg(""), 1500);
+    try {
+      const response = await fetch("http://127.0.0.1:8000/bank-account/", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response.ok) {
+        setBank(null);
+        setShowBank(false);
+        setIsEditing(false);
+        setMsg("Bank account deleted successfully.");
+      } else if (response.status === 400) {
+        setMsg("This bank account is already deleted.");
+        setBank(null);
+      } else {
+        const data = await response.json();
+        setMsg(data.error || "Failed to delete bank account.");
+      }
+    } catch {
+      setMsg("Error deleting bank account.");
+    }
     setLoading(false);
   }
 
-  
+  async function handleAddBankAccount() {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setMsg("User not authenticated. Please log in again.");
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch("http://127.0.0.1:8000/bank-account/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          display_name: "Primary Account",
+          infinite_balance: true,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setBank(data);
+        setDisplayName(data.display_name || "");
+        setMsg("New bank account added.");
+      } else if (response.status === 401) {
+        setMsg("Unauthorized. Please log in again.");
+      } else {
+        const err = await response.json();
+        setMsg(err.error || "Failed to add bank account.");
+      }
+    } catch {
+      setMsg("Error adding bank account.");
+    }
+    setLoading(false);
+  }
 
   return (
     <section className="account-page">
@@ -72,7 +128,12 @@ export default function MyAccountPage() {
         <h2>My Bank Account</h2>
 
         {!bank ? (
-          <p className="no-bank">No bank account found</p>
+          <>
+            <p className="no-bank">No bank account found</p>
+            <button className="edit-btn" onClick={handleAddBankAccount}>
+              Add Bank Account
+            </button>
+          </>
         ) : (
           <>
             <div className="button-row">
