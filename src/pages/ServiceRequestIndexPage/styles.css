@@ -26,6 +26,10 @@
   margin: 1rem auto;
   padding: 1.5rem 2rem;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .request-card:hover {
@@ -148,6 +152,7 @@ button:hover,
 .cancel-btn:hover {
   filter: brightness(1.1);
 }
+
 .confirm-overlay {
   position: fixed;
   top: 0;
@@ -218,12 +223,26 @@ button:hover,
 }
 
 @keyframes popIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
+
 .requests-page p {
   font-size: 1.1rem;
-  color: #f1f6f4; 
+  color: #f1f6f4;
   text-align: center;
   margin-top: 1rem;
+}
+
+.request-card h4,
+.request-card a {
+  display: block;
+  text-align: center;
+  margin: 0.6rem auto;
 }
