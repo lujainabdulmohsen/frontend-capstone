@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import * as serviceRequestAPI from "../../utilities/serviceRequest-api";
+import * as trafficFineAPI from "../../utilities/trafficFine-api";
 import faqs from "../../utilities/faqs";
 
 export default function ChatBotPage() {
@@ -12,6 +13,9 @@ export default function ChatBotPage() {
   const [appointment, setAppointment] = useState({ date: "", time: "" });
   const [pendingService, setPendingService] = useState(null);
   const [vehicleSerial, setVehicleSerial] = useState("");
+  const [pendingFines, setPendingFines] = useState([]);
+  const [selectedFine, setSelectedFine] = useState(null); // the fine object user selected
+  const [paymentContext, setPaymentContext] = useState(null); // "service" | "fine" | "fine_all"
   const chatBoxRef = useRef(null);
 
   useEffect(() => {
@@ -60,6 +64,41 @@ export default function ChatBotPage() {
     setSelectedService(service);
     setMessages((prev) => [...prev, { sender: "user", text: service.name }]);
 
+    if (service.name.match(/Violation|Fine|Traffic/i)) {
+      try {
+        const res = await trafficFineAPI.getMyFines();
+        const fines = res?.fines || [];
+        if (!fines.length) {
+          setMessages((prev) => [
+            ...prev,
+            { sender: "bot", text: "You have no traffic fines at the moment." },
+          ]);
+          return;
+        }
+        setPendingFines(fines);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "Here are your traffic fines:" },
+          ...fines.map((f, idx) => ({
+            sender: "bot",
+            text: `${idx + 1}. Fine No: ${f.fine_number} — Amount: ${f.amount} SAR`,
+          })),
+          {
+            sender: "bot",
+            text: "Which fine would you like to pay? Tap a number to see details, or choose 'Pay all'.",
+          },
+        ]);
+        setStep("trafficPayment");
+      } catch (err) {
+        console.error("Failed to fetch fines:", err);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "Failed to load traffic fines. Please try again later." },
+        ]);
+      }
+      return;
+    }
+
     if (service.name.match(/Vehicle/i)) {
       setStep("serial");
       setMessages((prev) => [
@@ -90,10 +129,81 @@ export default function ChatBotPage() {
           },
         ]);
         setPendingService(service);
+        setPaymentContext("service");
         setStep("payment");
       } else {
         await finalizeRequest(service, reply);
       }
+    }
+  }
+
+  function handleSelectFineById(fineId) {
+    const fine = pendingFines.find((f) => f.id === fineId);
+    if (!fine) return;
+    setSelectedFine(fine);
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "bot",
+        text: `Fine No: ${fine.fine_number} — Amount: ${fine.amount} SAR — Issued: ${fine.issued_at || "N/A"}`,
+      },
+      { sender: "bot", text: "Would you like to pay this fee from your Yusr bank account?" },
+    ]);
+    setPaymentContext("fine");
+    setStep("payment");
+  }
+
+  function handleChoosePayAll() {
+    setSelectedFine(null);
+    setPaymentContext("fine_all");
+    setMessages((prev) => [
+      ...prev,
+      { sender: "user", text: "Pay all fines" },
+      { sender: "bot", text: "Would you like to pay all fines from your Yusr bank account?" },
+    ]);
+    setStep("payment");
+  }
+
+  async function handleTrafficPaymentConfirm() {
+    setMessages((prev) => [
+      ...prev,
+      { sender: "user", text: "Confirm Payment" },
+      { sender: "bot", text: "Processing payment from your Yusr account..." },
+    ]);
+
+    try {
+      if (paymentContext === "fine") {
+        const payload = { fine_id: selectedFine.id, fine_number: selectedFine.fine_number, amount: selectedFine.amount };
+        const req = await serviceRequestAPI.create(selectedService.id, payload);
+        await serviceRequestAPI.payServiceRequest(req.id);
+        await trafficFineAPI.payFines({ fineIds: [selectedFine.id] });
+        setPendingFines((prev) => prev.filter((f) => f.id !== selectedFine.id));
+        setSelectedFine(null);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "Traffic fine payment succeeded!" },
+        ]);
+      } else if (paymentContext === "fine_all") {
+        const allIds = pendingFines.map((f) => f.id);
+        const payload = { fine_ids: allIds };
+        const req = await serviceRequestAPI.create(selectedService.id, payload);
+        await serviceRequestAPI.payServiceRequest(req.id);
+        await trafficFineAPI.payFines({ payAll: true });
+        setPendingFines([]);
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "All traffic fines have been paid successfully." },
+        ]);
+      }
+    } catch (err) {
+      console.error("Traffic payment error:", err);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "Payment failed. Please try again." },
+      ]);
+    } finally {
+      setPaymentContext(null);
+      setStep("services");
     }
   }
 
@@ -117,6 +227,7 @@ export default function ChatBotPage() {
         },
       ]);
       setPendingService(selectedService);
+      setPaymentContext("service");
       setStep("payment");
     } else {
       await finalizeRequest(selectedService, reply, {}, { serial: vehicleSerial });
@@ -135,11 +246,7 @@ export default function ChatBotPage() {
       return "Driving License renewal for 10 years. Fee: 150 SAR.";
     if (service.name.includes("Vehicle"))
       return "New Vehicle registration Fee: 150 SAR.";
-    if (
-      service.name.includes("Violation") ||
-      service.name.includes("Fine") ||
-      service.name.includes("Traffic")
-    )
+    if (service.name.includes("Violation") || service.name.includes("Fine") || service.name.includes("Traffic"))
       return "Traffic fine payment processed successfully. Fee: 150 SAR.";
     return `${service.name} has been processed successfully.`;
   }
@@ -182,44 +289,49 @@ export default function ChatBotPage() {
   }
 
   async function handlePayment(confirm) {
-    if (confirm) {
-      setMessages((prev) => [
-        ...prev,
-        { sender: "user", text: "Confirm Payment" },
-        {
-          sender: "bot",
-          text: "Processing payment from your Yusr account...",
-        },
-      ]);
-      try {
-        const request = await serviceRequestAPI.create(pendingService.id, {
-          status: "Approved",
-        });
-        await serviceRequestAPI.payServiceRequest(request.id);
-        const successText = `${pendingService.name} succeeded!`;
-        setMessages((prev) => [...prev, { sender: "bot", text: successText }]);
-      } catch {
-        setMessages((prev) => [
-          ...prev,
-          { sender: "bot", text: "Payment failed. Please try again." },
-        ]);
-      }
-    } else {
+    if (!confirm) {
       setMessages((prev) => [
         ...prev,
         { sender: "user", text: "Cancel Payment" },
-        {
-          sender: "bot",
-          text: "Payment cancelled. Your request was not submitted.",
-        },
+        { sender: "bot", text: "Payment cancelled. Your request was not submitted." },
       ]);
+      setPaymentContext(null);
+      setSelectedFine(null);
+      setPendingService(null);
+      setStep("services");
+      return;
     }
-    setPendingService(null);
-    setStep("services");
+
+    if (paymentContext === "fine" || paymentContext === "fine_all") {
+      await handleTrafficPaymentConfirm();
+      return;
+    }
+
+    setMessages((prev) => [
+      ...prev,
+      { sender: "user", text: "Confirm Payment" },
+      { sender: "bot", text: "Processing payment from your Yusr account..." },
+    ]);
+    try {
+      const request = await serviceRequestAPI.create(pendingService.id, { status: "Approved" });
+      await serviceRequestAPI.payServiceRequest(request.id);
+      const successText = `${pendingService.name} succeeded!`;
+      setMessages((prev) => [...prev, { sender: "bot", text: successText }]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "Payment failed. Please try again." },
+      ]);
+    } finally {
+      setPendingService(null);
+      setPaymentContext(null);
+      setStep("services");
+    }
   }
 
   function handleBack() {
-    if (step === "appointment" || step === "serial") setStep("services");
+    if (step === "appointment" || step === "serial" || step === "trafficPayment")
+      setStep("services");
     else if (step === "services" || step === "faqs") {
       setStep("welcome");
       setSelectedAgency(null);
@@ -354,6 +466,26 @@ export default function ChatBotPage() {
           </div>
         )}
 
+        {step === "trafficPayment" && pendingFines.length > 0 && (
+          <div style={col}>
+            {pendingFines.map((f, idx) => (
+              <button
+                key={f.id}
+                onClick={() => handleSelectFineById(f.id)}
+                style={btn}
+              >
+                {idx + 1}
+              </button>
+            ))}
+            <button onClick={handleChoosePayAll} style={btn}>
+              Pay All Fines
+            </button>
+            <button onClick={handleBack} style={backBtn}>
+              Back
+            </button>
+          </div>
+        )}
+
         {step === "serial" && (
           <form onSubmit={handleSerialSubmit} style={col}>
             <input
@@ -438,14 +570,17 @@ export default function ChatBotPage() {
 
         {step === "payment" && (
           <div style={row}>
-            <button onClick={() => handlePayment(true)} style={btn}>
+            <button
+              onClick={() => handlePayment(true)}
+              style={btn}
+            >
               Confirm Payment
             </button>
             <button
               onClick={() => handlePayment(false)}
               style={{ ...btn, background: "#c0392b" }}
             >
-               Cancel
+              Cancel
             </button>
           </div>
         )}
@@ -465,8 +600,18 @@ const btn = {
 };
 
 const backBtn = { ...btn, background: "#00796b" };
-const row = { display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.8rem" };
-const col = { display: "flex", flexDirection: "column", alignItems: "center", gap: "0.8rem" };
+const row = {
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  gap: "0.8rem",
+};
+const col = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "0.8rem",
+};
 const select = {
   padding: "0.6rem",
   borderRadius: "8px",
