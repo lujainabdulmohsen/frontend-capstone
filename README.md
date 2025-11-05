@@ -82,3 +82,25 @@ It provides access to multiple agencies, enables users to submit and track servi
 cd frontend
 npm install
 npm run dev
+
+## Icebox Features
+
+| Feature | Description |
+|----------|-------------|
+| Dark Mode | Add light/dark theme toggle for accessibility |
+| Multi-language Support | Support Arabic and English |
+| AI Voice Assistant | Allow voice-based interaction with chatbot |
+| Notifications Center | Alerts for status updates and new requests |
+| Profile Photo Upload | Let users upload a profile image |
+
+---
+
+## Challenges & Key Takeaways
+
+| Challenge | Solution / Learning |
+|------------|--------------------|
+| Managing JWT authentication across components | Implemented a global `sendRequest.js` utility to attach tokens automatically |
+| Keeping design consistent across pages | Used shared CSS classes and color palette (royal blue & royal green) |
+| Handling multiple routes and dynamic content | Configured React Router with parameterized routes |
+| Integrating frontend with Django REST API | Used fetch calls and tested all endpoints |
+| Optimizing component performance | Used React Hooks carefully to reduce unnecessary re-renders |
