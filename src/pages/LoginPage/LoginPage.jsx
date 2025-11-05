@@ -2,8 +2,9 @@ import "./styles.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import * as usersAPI from "../../utilities/users-api";
+import * as bankAPI from "../../utilities/bankAccount-api";
 
-export default function LoginPage({ setUser }) {
+export default function LoginPage({ setUser, setBankAcct }) {
   const navigate = useNavigate();
   const initialState = { username: "", password: "" };
   const [formData, setFormData] = useState(initialState);
@@ -20,6 +21,9 @@ export default function LoginPage({ setUser }) {
       const loggedInUser = await usersAPI.login(formData);
       if (loggedInUser) {
         setUser(loggedInUser);
+        const creditInfo = await bankAPI.getMyBankAccount()
+        setBankAcct(creditInfo.acct)
+
         navigate("/assistant"); // ✅ نفس السلوك بالهوم بيج
       } else {
         setError("Login failed. Please check your credentials.");

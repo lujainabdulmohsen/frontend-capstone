@@ -59,7 +59,7 @@ export default function App() {
               <Route path="/" element={<HomePage user={user} setUser={setUser} />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/signup" element={<SignupPage user={user} setUser={setUser} />} />
-              <Route path="/login" element={<LoginPage setUser={setUser} />} />
+              <Route path="/login" element={<LoginPage setUser={setUser} setBankAcct={setBankAcct} />} />
               <Route path="/*" element={<Navigate to="/" />} />
             </>
           )}
