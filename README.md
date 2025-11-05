@@ -17,7 +17,6 @@ It provides access to multiple agencies, enables users to submit and track servi
 | Styling | Custom CSS (Royal Blue & Royal Green palette) |
 | Authentication | JWT stored in `localStorage` |
 | Build Tool | Vite |
-| Backend Integration | Django REST Framework API |
 
 ---
 
@@ -34,7 +33,6 @@ It provides access to multiple agencies, enables users to submit and track servi
 | Manage payment methods | Add or remove my credit card in My Account |
 | View and pay traffic fines | View unpaid fines and pay individually or all at once |
 | Change my password | Update my password securely from account settings |
-| Use the chatbot assistant | Get guided help in choosing and completing a service |
 
 ---
 
@@ -76,13 +74,6 @@ It provides access to multiple agencies, enables users to submit and track servi
 
 ---
 
-## Installation & Setup
-
-```bash
-cd frontend
-npm install
-npm run dev
-
 ## Icebox Features
 
 | Feature | Description |
@@ -104,3 +95,12 @@ npm run dev
 | Handling multiple routes and dynamic content | Configured React Router with parameterized routes |
 | Integrating frontend with Django REST API | Used fetch calls and tested all endpoints |
 | Optimizing component performance | Used React Hooks carefully to reduce unnecessary re-renders |
+
+---
+
+## Installation & Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
