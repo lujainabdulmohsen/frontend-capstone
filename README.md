@@ -1,106 +1,87 @@
-# Yusr — Frontend
+# Yusr - Frontend
 
-## Project Description  
-Yusr is a modern single-page React application that connects citizens to government services through one unified, secure interface.  
-It provides access to multiple agencies, enables users to submit and track service requests, schedule appointments, pay fines, and manage their account details — all in one place.
+## Project Description
+Yusr is a single-page React application that connects users to government services through one secure interface.  
+It allows users to view agencies, request services, book appointments, pay fines, and manage their account details.
 
 ---
 
-## Technologies Used
+## ERD Diagram
+Add your ERD image below:
 
-| Category | Tools |
-|-----------|--------|
-| Framework | React (Vite) |
-| Routing | React Router |
-| HTTP | Fetch API + `sendRequest.js` |
-| State Management | React Hooks |
-| Styling | Custom CSS (Royal Blue & Royal Green palette) |
-| Authentication | JWT stored in `localStorage` |
-| Build Tool | Vite |
+![ERD Diagram](./assets/ERD.png)
+
+---
+
+## RESTful Routing Table
+| Route | Method | Description |
+|--------|---------|-------------|
+| / | GET | Home page |
+| /login | POST | User login |
+| /register | POST | User registration |
+| /agencies | GET | List all agencies |
+| /services | GET | List all services |
+| /service-requests | GET, POST | View or create a service request |
+| /service-requests/:id | GET, PUT, DELETE | Retrieve, update, or delete a service request |
+| /appointments | POST | Create an appointment |
+| /credit-card | GET | View credit card details |
 
 ---
 
 ## User Stories
-
-| As a user, I can... | Description |
-|----------------------|-------------|
-| Sign up and log in | Create an account and authenticate securely using JWT |
-| Browse government agencies | View available agencies and their descriptions |
-| View available services | Explore services offered by each agency |
-| Create a service request | Submit a request and provide required information |
-| Track my requests | View the status and history of submitted requests |
-| Manage appointments | Schedule, view, update, or delete appointments |
-| Manage payment methods | Add or remove my credit card in My Account |
-| View and pay traffic fines | View unpaid fines and pay individually or all at once |
-| Change my password | Update my password securely from account settings |
+| User Story | Description |
+|-------------|-------------|
+| As a user, I can register and log in securely | To access my personalized account |
+| I can view government agencies and their services | To explore available options |
+| I can submit a service request | To apply for renewals or fines |
+| I can book appointments | To schedule visits conveniently |
+| I can view my credit card and pay fees | To complete payments easily |
+| I can view my previous requests | To track my service history |
 
 ---
 
-## Frontend Pages
-
-| Page | Path | Description |
-|-------|------|-------------|
-| Home | `/` | Landing page introducing Yusr |
-| Login | `/login` | User login page |
-| Signup | `/signup` | User registration page |
-| Services | `/services` | List of all available services |
-| My Requests | `/my-requests` | Manage and view service requests |
-| My Account | `/my-account` | Manage user and credit card information |
-| Fines | `/fines` | View and pay traffic fines |
-| Chat | `/chat` | Interactive assistant to guide users through service selection |
-
----
-
-## RESTful Routes
-
-| Endpoint | Method | Description |
-|-----------|--------|-------------|
-| `/users/signup/` | POST | Register a new user |
-| `/users/login/` | POST | Authenticate user and return tokens |
-| `/users/token/refresh/` | GET | Refresh JWT token |
-| `/agencies/` | GET | Get all agencies |
-| `/services/` | GET | Get all services |
-| `/services/<id>/` | GET | Get details for a specific service |
-| `/service-requests/` | GET | View all my requests |
-| `/service-requests/` | POST | Create a new service request |
-| `/service-requests/<id>/` | PUT | Update a service request |
-| `/service-requests/<id>/` | DELETE | Delete a service request |
-| `/service-requests/<id>/pay/` | POST | Pay for a service request |
-| `/credit-card/` | GET | Get user's credit cards |
-| `/credit-card/` | POST | Add new credit card |
-| `/credit-card/` | DELETE | Delete a credit card |
-| `/my-fines/` | GET | View all unpaid fines |
-| `/pay-fines/` | POST | Pay one or all fines |
+## Technologies Used
+| Category | Tools |
+|-----------|--------|
+| Framework | React (Vite) |
+| Routing | React Router |
+| HTTP | Fetch API |
+| State Management | React Hooks |
+| Styling | Custom CSS |
+| Authentication | JWT stored in localStorage |
+| Containerization | Docker |
+| Version Control | Git & GitHub |
 
 ---
 
-## Icebox Features
+## Installation Instructions
+1. Clone the repository:
+   ```bash
+   git clone <frontend-repo-link>
+   cd frontend
+   Run the Development Server
+   Open in Browser
+   http://localhost:5173/
 
-| Feature | Description |
-|----------|-------------|
-| Dark Mode | Add light/dark theme toggle for accessibility |
-| Multi-language Support | Support Arabic and English |
-| AI Voice Assistant | Allow voice-based interaction with chatbot |
-| Notifications Center | Alerts for status updates and new requests |
-| Profile Photo Upload | Let users upload a profile image |
+   ---
 
----
+   ##Icebox Features
 
-## Challenges & Key Takeaways
-
-| Challenge | Solution / Learning |
-|------------|--------------------|
-| Managing JWT authentication across components | Implemented a global `sendRequest.js` utility to attach tokens automatically |
-| Keeping design consistent across pages | Used shared CSS classes and color palette (royal blue & royal green) |
-| Handling multiple routes and dynamic content | Configured React Router with parameterized routes |
-| Integrating frontend with Django REST API | Used fetch calls and tested all endpoints |
-| Optimizing component performance | Used React Hooks carefully to reduce unnecessary re-renders |
+Add chatbot interface for guided service navigation
+Add multilingual support
+Add responsive design for mobile devices
+Add notification system for request updates
 
 ---
 
-## Installation & Setup
+#Challenges / Key Takeaways
+Managing JWT authentication and persistence
+Handling API requests and errors cleanly
+Creating a consistent and intuitive UI using React Router
+Integrating backend endpoints smoothly with frontend logic
 
-```bash
-cd frontend
-npm install
-npm run dev
+---
+
+#Links
+Backend Repository: [https://github.com/lujainabdulmohsen/backend-capstone]
+
