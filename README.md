@@ -1,16 +1,106 @@
-# React + Vite
+# Yusr — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Description  
+Yusr is a modern single-page React application that connects citizens to government services through one unified, secure interface.  
+It provides access to multiple agencies, enables users to submit and track service requests, schedule appointments, pay fines, and manage their account details — all in one place.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
 
-## React Compiler
+| Category | Tools |
+|-----------|--------|
+| Framework | React (Vite) |
+| Routing | React Router |
+| HTTP | Fetch API + `sendRequest.js` |
+| State Management | React Hooks |
+| Styling | Custom CSS (Royal Blue & Royal Green palette) |
+| Authentication | JWT stored in `localStorage` |
+| Build Tool | Vite |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## User Stories
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| As a user, I can... | Description |
+|----------------------|-------------|
+| Sign up and log in | Create an account and authenticate securely using JWT |
+| Browse government agencies | View available agencies and their descriptions |
+| View available services | Explore services offered by each agency |
+| Create a service request | Submit a request and provide required information |
+| Track my requests | View the status and history of submitted requests |
+| Manage appointments | Schedule, view, update, or delete appointments |
+| Manage payment methods | Add or remove my credit card in My Account |
+| View and pay traffic fines | View unpaid fines and pay individually or all at once |
+| Change my password | Update my password securely from account settings |
+
+---
+
+## Frontend Pages
+
+| Page | Path | Description |
+|-------|------|-------------|
+| Home | `/` | Landing page introducing Yusr |
+| Login | `/login` | User login page |
+| Signup | `/signup` | User registration page |
+| Services | `/services` | List of all available services |
+| My Requests | `/my-requests` | Manage and view service requests |
+| My Account | `/my-account` | Manage user and credit card information |
+| Fines | `/fines` | View and pay traffic fines |
+| Chat | `/chat` | Interactive assistant to guide users through service selection |
+
+---
+
+## RESTful Routes
+
+| Endpoint | Method | Description |
+|-----------|--------|-------------|
+| `/users/signup/` | POST | Register a new user |
+| `/users/login/` | POST | Authenticate user and return tokens |
+| `/users/token/refresh/` | GET | Refresh JWT token |
+| `/agencies/` | GET | Get all agencies |
+| `/services/` | GET | Get all services |
+| `/services/<id>/` | GET | Get details for a specific service |
+| `/service-requests/` | GET | View all my requests |
+| `/service-requests/` | POST | Create a new service request |
+| `/service-requests/<id>/` | PUT | Update a service request |
+| `/service-requests/<id>/` | DELETE | Delete a service request |
+| `/service-requests/<id>/pay/` | POST | Pay for a service request |
+| `/credit-card/` | GET | Get user's credit cards |
+| `/credit-card/` | POST | Add new credit card |
+| `/credit-card/` | DELETE | Delete a credit card |
+| `/my-fines/` | GET | View all unpaid fines |
+| `/pay-fines/` | POST | Pay one or all fines |
+
+---
+
+## Icebox Features
+
+| Feature | Description |
+|----------|-------------|
+| Dark Mode | Add light/dark theme toggle for accessibility |
+| Multi-language Support | Support Arabic and English |
+| AI Voice Assistant | Allow voice-based interaction with chatbot |
+| Notifications Center | Alerts for status updates and new requests |
+| Profile Photo Upload | Let users upload a profile image |
+
+---
+
+## Challenges & Key Takeaways
+
+| Challenge | Solution / Learning |
+|------------|--------------------|
+| Managing JWT authentication across components | Implemented a global `sendRequest.js` utility to attach tokens automatically |
+| Keeping design consistent across pages | Used shared CSS classes and color palette (royal blue & royal green) |
+| Handling multiple routes and dynamic content | Configured React Router with parameterized routes |
+| Integrating frontend with Django REST API | Used fetch calls and tested all endpoints |
+| Optimizing component performance | Used React Hooks carefully to reduce unnecessary re-renders |
+
+---
+
+## Installation & Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
