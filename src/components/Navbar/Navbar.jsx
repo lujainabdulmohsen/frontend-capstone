@@ -1,13 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
 import * as usersAPI from "../../utilities/users-api";
 
-export default function Navbar({ user, setUser }) {
+export default function Navbar({ user, setUser, setBankAcct }) {
   const navigate = useNavigate();
 
   function handleLogout(e) {
     e.preventDefault();
-    localStorage.removeItem("token");
+    usersAPI.logout()
     setUser(null);
+    setBankAcct(null)
     navigate("/");
   }
 

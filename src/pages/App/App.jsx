@@ -7,33 +7,29 @@ import ServiceRequestIndexPage from "../ServiceRequestIndexPage";
 import ServiceRequestDetailPage from "../ServiceRequestDetailPage";
 import Navbar from "../../components/Navbar/Navbar";
 import SignupPage from "../SignupPage/SignupPage";
-import * as userService from "../../utilities/users-service";
+import * as usersAPI from "../../utilities/users-api"
+import * as bankAPI from "../../utilities/bankAccount-api";
 import LoginPage from "../LoginPage/LoginPage";
 import MyAccountPage from "../MyAccountPage";
 import "../../utilities/globa.css";
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [bankAcct, setBankAcct] = useState(null);
+
+  console.log(user, bankAcct)
 
   useEffect(() => {
     async function verifyUser() {
-      const verifiedUser = await userService.getUser();
+      const verifiedUser = await usersAPI.getUser();
+      setUser(verifiedUser)
       if (verifiedUser) {
-        setUser(verifiedUser);
-      } else {
-        setUser(null);
+        console.log(verifiedUser, "checking user data after signup")
+        const creditInfo = await bankAPI.getMyBankAccount()
+        setBankAcct(creditInfo.acct)
       }
     }
     verifyUser();
-  }, []);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const updatedUser = userService.getUser();
-      setUser(updatedUser);
-    };
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   return (
@@ -41,7 +37,7 @@ export default function App() {
       <header className="main-header">
         <nav>
           <ul>
-            <Navbar user={user} setUser={setUser} />
+            <Navbar user={user} setUser={setUser} setBankAcct={setBankAcct} />
           </ul>
         </nav>
       </header>
@@ -50,19 +46,18 @@ export default function App() {
         <Routes>
           {user ? (
             <>
-              <Route path="/" element={<HomePage user={user} setUser={setUser} />} />
+              <Route path="/" element={<HomePage user={user} setUser={setUser} bankAcct={bankAcct} />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/assistant" element={<ChatBotPage />} />
+              <Route path="/assistant" element={<ChatBotPage user={user} bankAcct={bankAcct} />} />
               <Route path="/requests" element={<ServiceRequestIndexPage />} />
               <Route path="/requests/:id" element={<ServiceRequestDetailPage />} />
-              <Route path="/my-account" element={<MyAccountPage />} />
+              <Route path="/my-account" element={<MyAccountPage user={user} bankAcct={bankAcct} setBankAcct={setBankAcct} />} />
               <Route path="/*" element={<Navigate to="/" />} />
             </>
           ) : (
             <>
               <Route path="/" element={<HomePage user={user} setUser={setUser} />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/assistant" element={<ChatBotPage />} />
               <Route path="/signup" element={<SignupPage user={user} setUser={setUser} />} />
               <Route path="/login" element={<LoginPage setUser={setUser} />} />
               <Route path="/*" element={<Navigate to="/" />} />

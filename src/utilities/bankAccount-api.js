@@ -1,14 +1,19 @@
 import sendRequest from "./sendRequest";
-const BASE_URL = "http://127.0.0.1:8000/bank-account";
+
+const BASE_URL = "/bank-account/";
 
 export async function getMyBankAccount() {
-  return await sendRequest(`${BASE_URL}/`, "GET");
+  return sendRequest(`${BASE_URL}`, "GET");
 }
 
 export async function updateMyBankAccount(data) {
-  return await sendRequest(`${BASE_URL}/`, "PUT", data);
+  return sendRequest(`${BASE_URL}`, "PUT", data);
 }
 
 export async function deleteMyBankAccount() {
-  return await sendRequest(`${BASE_URL}/`, "DELETE");
+  return sendRequest(`${BASE_URL}`, "DELETE");
+}
+
+export async function addBankAccount(data) {
+  return sendRequest(`${BASE_URL}`, "POST", data);
 }

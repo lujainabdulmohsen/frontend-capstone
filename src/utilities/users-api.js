@@ -1,40 +1,50 @@
 import sendRequest from "./sendRequest";
-const BASE_URL = "http://127.0.0.1:8000/users";
+const baseURL = "/users/";
 
 export async function signup(formData) {
-  const response = await sendRequest(`${BASE_URL}/signup/`, "POST", formData);
-  if (response && response.access) {
-    localStorage.setItem("token", response.access);
-  }
-  return response.user;
+    try {
+        const newUserData = await sendRequest(`${baseURL}signup/`, "POST", formData);
+        localStorage.setItem("accessToken", newUserData.access)
+        localStorage.setItem("refreshToken", newUserData.refresh)
+        return newUserData.user
+    } catch (err) {
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("refreshToken")
+        return null
+    }
 }
 
 export async function login(formData) {
-  try {
-    const response = await sendRequest(`${BASE_URL}/login/`, "POST", formData);
-    console.log(response, "login check response");
-    if (response && response.access) {
-      localStorage.setItem("token", response.access);
+    try {
+        const loggedInUser = await sendRequest(`${baseURL}login/`, "POST", formData);
+        localStorage.setItem("accessToken", loggedInUser.access)
+        localStorage.setItem("refreshToken", loggedInUser.refresh)
+        return loggedInUser.user
+    } catch (err) {
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("refreshToken")
+        return null
     }
-    return response.user;
-  } catch (err) {
-    localStorage.removeItem("token");
-    return null;
-  }
 }
 
 export async function getUser() {
-  const token = localStorage.getItem("token");
-  if (!token) return null;
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+          const response = await sendRequest(`${baseURL}token/refresh/`)
+            localStorage.setItem('accessToken', response.access);
+            return response.user
+        }
+        return null;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
 
-  try {
-    const response = await sendRequest("http://127.0.0.1:8000/users/token/refresh/", "GET");
-    return response.user;
-  } catch (err) {
-    console.error("Error verifying user:", err);
-    localStorage.removeItem("token");
-    return null;
-  }
+export function logout() {
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("refreshToken")
 }
 
 export async function changePassword(old_password, new_password) {

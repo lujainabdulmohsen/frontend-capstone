@@ -1,111 +1,71 @@
-import { useEffect, useState } from "react";
-import { getUser } from "../../utilities/users-api";
-import {
-  getMyBankAccount,
-  updateMyBankAccount,
-  deleteMyBankAccount,
-} from "../../utilities/bankAccount-api";
+import { useState } from "react";
+import { updateMyBankAccount, deleteMyBankAccount, addBankAccount } from "../../utilities/bankAccount-api";
 import "./styles.css";
 
-export default function MyAccountPage() {
-  const [user, setUser] = useState(null);
-  const [bank, setBank] = useState(null);
-  const [displayName, setDisplayName] = useState("");
+export default function MyAccountPage({ user, bankAcct, setBankAcct }) {
+  const initialData = {
+    display_name:          bankAcct ? bankAcct.display_name : "",
+    infinite_balance:      true,
+    credit_card_number:    bankAcct ? bankAcct.credit_card_number : "0000000000000000",
+    expiration_date:       bankAcct ? bankAcct.expiration_date : "0000",
+    security_code:         bankAcct ? bankAcct.security_code : "000",
+  }
+  const [formData, setFormData] = useState(initialData)
+
   const [showBank, setShowBank] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const u = await getUser();
-      setUser(u);
-      try {
-        const b = await getMyBankAccount();
-        setBank(b);
-        setDisplayName(b.display_name || "");
-      } catch {}
-      setLoading(false);
-    })();
-  }, []);
 
   async function handleUpdateBank(e) {
     e.preventDefault();
-    setLoading(true);
-    const updated = await updateMyBankAccount({ display_name: displayName });
-    setBank(updated);
+    const updated = await updateMyBankAccount(formData);
+    setBankAcct(updated);
     setIsEditing(false);
     setMsg("Saved");
-    setTimeout(() => setMsg(""), 1500);
-    setLoading(false);
   }
 
   async function handleDeleteBank() {
-    if (!bank) return;
-    setLoading(true);
     try {
-      const response = await fetch("http://127.0.0.1:8000/bank-account/", {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response.ok) {
-        setBank(null);
+      const res = await deleteMyBankAccount();
+      if (res.ok) {
+        setBankAcct(null);
         setShowBank(false);
         setIsEditing(false);
+        setFormData({
+          display_name:          "",
+          infinite_balance:      true,
+          credit_card_number:    "0000000000000000",
+          expiration_date:       "0000",
+          security_code:         "000",
+        });
         setMsg("Bank account deleted successfully.");
-      } else if (response.status === 400) {
-        setMsg("This bank account is already deleted.");
-        setBank(null);
       } else {
-        const data = await response.json();
-        setMsg(data.error || "Failed to delete bank account.");
+        throw new Error("error deleting account")
       }
-    } catch {
+    } catch (err) {
+      console.log(err, "checking error")
       setMsg("Error deleting bank account.");
     }
-    setLoading(false);
+
   }
 
-  async function handleAddBankAccount() {
-    setLoading(true);
+  async function handleCreateBank(e) {
+    e.preventDefault();
+
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setMsg("User not authenticated. Please log in again.");
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch("http://127.0.0.1:8000/bank-account/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          display_name: "Primary Account",
-          infinite_balance: true,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setBank(data);
-        setDisplayName(data.display_name || "");
+        const newBankAcct = await addBankAccount(formData)
+        setBankAcct(newBankAcct);
         setMsg("New bank account added.");
-      } else if (response.status === 401) {
-        setMsg("Unauthorized. Please log in again.");
-      } else {
-        const err = await response.json();
-        setMsg(err.error || "Failed to add bank account.");
-      }
-    } catch {
-      setMsg("Error adding bank account.");
+    } catch (err) {
+      setMsg(err);
     }
-    setLoading(false);
+
+  }
+
+  function handleChange(evt) {
+    const updatedData = { ...formData, [evt.target.name]: evt.target.value };
+    setFormData(updatedData);
   }
 
   return (
@@ -127,13 +87,22 @@ export default function MyAccountPage() {
       <div className="account-card">
         <h2>My Bank Account</h2>
 
-        {!bank ? (
-          <>
-            <p className="no-bank">No bank account found</p>
-            <button className="edit-btn" onClick={handleAddBankAccount}>
-              Add Bank Account
-            </button>
-          </>
+        {!bankAcct ? (
+              <form onSubmit={handleCreateBank} style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+                <label htmlFor="display-name">Display Name:</label>
+                <input name="display_name" id="display-name" value={formData.display_name} type="text" onChange={handleChange} />
+
+                <label htmlFor="credit_card_number">Credit Card Number:</label>
+                <input name="credit_card_number" type="text" id="credit_card_number" value={formData.credit_card_number} minLength={16} maxLength={16} onChange={handleChange} />
+
+                <label htmlFor="expiration_date">Expiration Date:</label>
+                <input name="expiration_date" type="text" id="expiration_date" value={formData.expiration_date} minLength={4} maxLength={4} onChange={handleChange} />
+
+                <label htmlFor="security_code">Security Code:</label>
+                <input name="security_code" type="number" id="security_code" value={formData.security_code} min={100} max={999} onChange={handleChange} />
+
+                <button type="submit" className="edit-btn">Add Your Credit Card Account</button>
+              </form>
         ) : (
           <>
             <div className="button-row">
@@ -156,28 +125,27 @@ export default function MyAccountPage() {
 
             {showBank && (
               <div className="bank-info">
-                <p>
-                  <strong>Display Name:</strong> {bank.display_name}
-                </p>
-                <p style={{ wordBreak: "break-all" }}>
-                  <strong>IBAN:</strong> {bank.iban}
-                </p>
+                <div>Name: {bankAcct.display_name}</div>
+                <div>Card Number: {bankAcct.credit_card_number}</div>
+                <div>Expiration: {bankAcct.expiration_date}</div>
               </div>
             )}
 
             {isEditing && (
               <form onSubmit={handleUpdateBank} className="edit-form">
-                <label>
-                  New Display Name:
-                  <input
-                    type="text"
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                  />
-                </label>
-                <button type="submit" className="edit-btn">
-                  Save
-                </button>
+                <label htmlFor="display-name">Display Name:</label>
+                <input  name="display_name" type="text" id="display-name" value={formData.display_name} onChange={handleChange} />
+
+                <label htmlFor="credit_card_number">Credit Card Number:</label>
+                <input  name="credit_card_number" type="text" id="credit_card_number" value={formData.credit_card_number} minLength={16} maxLength={16} onChange={handleChange} />
+
+                <label htmlFor="expiration_date">Expiration Date:</label>
+                <input  name="expiration_date" type="text" id="expiration_date" value={formData.expiration_date} minLength={4} maxLength={4} onChange={handleChange} />
+
+                <label htmlFor="security_code">Security Code:</label>
+                <input type="number" id="security_code" value={formData.security_code} min={100} max={999} onChange={handleChange} />
+
+                <button name="security_code" type="submit" className="edit-btn">Save</button>
               </form>
             )}
           </>
