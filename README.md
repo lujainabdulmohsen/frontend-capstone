@@ -82,6 +82,14 @@ Integrating backend endpoints smoothly with frontend logic
 
 ---
 
+## Run with Docker
+
+1. Build the backend image:
+   ```bash
+   docker compose build
+
+   ---
+
 #Links
 Backend Repository: [https://github.com/lujainabdulmohsen/backend-capstone]
 

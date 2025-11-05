@@ -39,7 +39,43 @@
   margin-bottom: 1rem;
 }
 
-/* ✅ العنوان يسار والقيمة بالنص الفعلي */
+/* ✅ ترتيب الحقول داخل الفورم */
+.edit-form {
+  margin-top: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.form-row label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font-weight: 600;
+  color: #002E47;
+}
+
+.form-row input {
+  margin-top: 0.4rem;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 46, 71, 0.25);
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+/* باقي التنسيقات كما هي */
 .account-field {
   display: flex;
   flex-direction: column;
@@ -56,13 +92,12 @@
 }
 
 .account-field .value {
-  text-align: center; /* وسط فعلي */
+  text-align: center;
   color: #002E47;
   font-size: 1rem;
   font-weight: 500;
 }
 
-/* باقي التنسيقات كما هي */
 .no-bank {
   color: #002E47;
   text-align: center;
@@ -126,20 +161,6 @@ button:hover,
 
 .bank-info p {
   margin: 0.4rem 0;
-}
-
-.edit-form {
-  margin-top: 1rem;
-  text-align: center;
-}
-
-.edit-form input {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: 1px solid rgba(0, 46, 71, 0.25);
-  font-size: 0.95rem;
-  margin-top: 0.4rem;
 }
 
 .status-msg {

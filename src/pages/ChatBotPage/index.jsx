@@ -202,7 +202,7 @@ export default function ChatBotPage({ user, bankAcct }) {
     if (service.name.includes("Passport"))
       return "Passport renewal valid for 5 years. Fee: 200 SAR.";
     if (service.name.includes("Medical Report"))
-      return "Your medical report has been submitted and will be sent to your email.";
+      return "Your medical report has been created and will be sent to your email.";
     if (service.name.includes("License"))
       return "Driving License renewal for 10 years. Fee: 150 SAR.";
     if (service.name.includes("Vehicle"))
@@ -406,7 +406,7 @@ export default function ChatBotPage({ user, bankAcct }) {
                   <button onClick={() => handlePayment(false)} style={{ ...btn, background: "#c0392b" }}> Cancel </button>
               </>
               : <>
-                  <Link to="/my-account">Create an Account</Link>
+                  <Link to="/my-account"style={btn}>Create an Account</Link>
                   <button onClick={() => handlePayment(false)} style={{ ...btn, background: "#c0392b" }}> Cancel </button>
               </>}
           </div>
