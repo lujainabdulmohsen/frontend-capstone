@@ -17,6 +17,7 @@ It provides access to multiple agencies, enables users to submit and track servi
 | Styling | Custom CSS (Royal Blue & Royal Green palette) |
 | Authentication | JWT stored in `localStorage` |
 | Build Tool | Vite |
+| Backend Integration | Django REST Framework API |
 
 ---
 
@@ -33,6 +34,7 @@ It provides access to multiple agencies, enables users to submit and track servi
 | Manage payment methods | Add or remove my credit card in My Account |
 | View and pay traffic fines | View unpaid fines and pay individually or all at once |
 | Change my password | Update my password securely from account settings |
+| Use the chatbot assistant | Get guided help in choosing and completing a service |
 
 ---
 
