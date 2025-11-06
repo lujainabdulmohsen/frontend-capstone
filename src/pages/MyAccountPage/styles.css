@@ -39,40 +39,45 @@
   margin-bottom: 1rem;
 }
 
-/* ✅ ترتيب الحقول داخل الفورم */
+/* ✅ تعديل الحقول لتكون بالوسط ومتباعدة */
 .edit-form {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
-.form-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  max-width: 600px;
-}
-
-.form-row label {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  font-weight: 600;
-  color: #002E47;
-}
-
-.form-row input {
-  margin-top: 0.4rem;
-  padding: 0.6rem;
+.edit-form input {
+  width: 80%;
+  max-width: 400px;
+  padding: 0.7rem;
   border-radius: 8px;
   border: 1px solid rgba(0, 46, 71, 0.25);
   font-size: 0.95rem;
-  width: 100%;
+}
+
+.edit-form button {
+  margin-top: 1rem;
+  width: 60%;
+  max-width: 300px;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #779663;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0, 46, 71, 0.12);
+  transition: all 0.3s ease;
+}
+
+.edit-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 46, 71, 0.25);
+  filter: brightness(1.08);
 }
 
 /* باقي التنسيقات كما هي */

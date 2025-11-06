@@ -88,7 +88,7 @@ export default function MyAccountPage({ user, bankAcct, setBankAcct }) {
         <h2>My Bank Account</h2>
 
         {!bankAcct ? (
-              <form onSubmit={handleCreateBank} style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+              <form onSubmit={handleCreateBank} className="edit-form">
                 <label htmlFor="display-name">Display Name:</label>
                 <input name="display_name" id="display-name" value={formData.display_name} type="text" onChange={handleChange} />
 
